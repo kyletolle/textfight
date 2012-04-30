@@ -28,12 +28,12 @@ while (fighter = s.accept)
 
     begin
       loop do
-        line = c.readline
+        line = f.readline
         broadcast("#{name}: #{line}", fighters)
       end
     rescue EOFError
       f.close
-      fighters.delete(f)
+      fighters.delete f 
       broadcast("#{name} has left", fighters)
     end
   end

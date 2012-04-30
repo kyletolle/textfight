@@ -1,5 +1,10 @@
 require 'socket'
 
+def welcome(fighter)
+  fighter.print "Welcome! Please enter your name: "
+  fighter.readline.chomp
+end
+
 def broadcast(text, fighters)
   fighters.each do |fighter|
     fighter.puts text
@@ -17,16 +22,20 @@ while (fighter = s.accept)
       f.close
     end
 
+    name = welcome(fighter)
+    broadcast("#{name} has joined", fighters)
     fighters << f
-    broadcast("New fighter connected!", fighters)
 
-    f.puts "What's your name?"
-    while f.gets
-      # Do something
+    begin
+      loop do
+        line = c.readline
+        broadcast("#{name}: #{line}", fighters)
+      end
+    rescue EOFError
+      f.close
+      fighters.delete(f)
+      broadcast("#{name} has left", fighters)
     end
-
-    fighters.delete f
-    f.close
   end
 end
 

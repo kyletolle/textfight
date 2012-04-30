@@ -1,2 +1,2 @@
 #!/bin/bash
-telnet localhost 3939
+telnet 96.126.122.16 3939

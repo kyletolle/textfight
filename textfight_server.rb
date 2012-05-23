@@ -2,31 +2,42 @@ require 'socket'
 
 def broadcast(text, fighters)
   fighters.each do |fighter|
-    fighter.puts text
+    fighter.connection.puts text
   end
 end
 
+class Fighter
+  attr_accessor :connection
+end
 
-s = TCPServer.new(3939)
+
+server = TCPServer.new(3939)
 fighters = []
 
-while (fighter = s.accept)
-  Thread.new(fighter) do |f|
+puts "Server started. Waiting for connections..."
+
+while (connection = server.accept)
+  Thread.new(connection) do |c|
+    c.puts
+    c.puts "Welcome to textfight!"
     if fighters.size >= 2
-      f.puts "There are already 2 fighters!"
-      f.close
+      c.puts "There are already 2 fighters!"
+      c.close
     end
 
-    fighters << f
+    fighter = Fighter.new
+    fighter.connection = c
+
+    fighters << fighter
     broadcast("New fighter connected!", fighters)
 
-    f.puts "What's your name?"
-    while f.gets
-      # Do something
+    fighter.connection.puts "What's your name?"
+    while text = fighter.connection.gets
+      broadcast(text, fighters)
     end
 
-    fighters.delete f
-    f.close
+    fighters.delete fighter
+    fighter.connection.close
   end
 end
 

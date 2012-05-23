@@ -7,7 +7,7 @@ def broadcast(text, fighters)
 end
 
 class Fighter
-  attr_accessor :connection
+  attr_accessor :connection, :name
 end
 
 
@@ -29,9 +29,16 @@ while (connection = server.accept)
     fighter.connection = c
 
     fighters << fighter
-    broadcast("New fighter connected!", fighters)
 
     fighter.connection.puts "What's your name?"
+    fighter.name = fighter.connection.gets.chomp
+
+    broadcast("\nNew fighter connected!", fighters)
+    broadcast("All fighters joined so far:", fighters)
+    fighters.each do |f|
+      broadcast("  #{f.name}", fighters)
+    end
+
     while text = fighter.connection.gets
       broadcast(text, fighters)
     end

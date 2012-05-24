@@ -19,29 +19,33 @@ class Server
     def accept_connections
       while (connection = @server.accept)
         Thread.new(connection) do |c|
-          connection_limit_check(c)
-
-          fighter = create_new_fighter(c)
-
-          welcome(fighter)
-
-          fighter.name = ask_name(fighter)
-
-          announce_fighter_join
-
-          # This actually makes sure both fighters joined before it returns.
-          @world.join(fighter)
-
-          fighter.connection.puts @world.map
-
-          while text = fighter.connection.gets.chomp
-            @world.step(fighter, text)
-          end
-
-          disconnect(fighter)
+          new_connection(c)
         end
       end
 
+    end
+
+    def new_connection(connection)
+      connection_limit_check(connection)
+
+      fighter = create_new_fighter(connection)
+
+      welcome(fighter)
+
+      fighter.name = ask_name(fighter)
+
+      announce_fighter_join
+
+      # This actually makes sure both fighters joined before it returns.
+      @world.join(fighter)
+
+      fighter.connection.puts @world.map
+
+      while text = fighter.connection.gets.chomp
+        @world.step(fighter, text)
+      end
+
+      disconnect(fighter)
     end
 
     def create_new_fighter(connection)

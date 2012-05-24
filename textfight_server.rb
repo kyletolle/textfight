@@ -36,6 +36,18 @@ class World
   end
 
   def step(fighter, input)
+    case input
+    when "w"
+      fighter.connection.puts "WWWWWW!"
+    when "a"
+      fighter.connection.puts "AAAAAA!"
+    when "s"
+      fighter.connection.puts "SSSSSS!"
+    when "d"
+      fighter.connection.puts "DDDDDD!"
+    else
+      fighter.connection.puts "OTHER!!!!!!"
+    end
     nil
   end
 end
@@ -43,7 +55,7 @@ end
 server = TCPServer.new(3939)
 @fighters = []
 
-world = World.new
+@world = World.new
 
 puts "Server started. Waiting for connections..."
 
@@ -71,11 +83,11 @@ while (connection = server.accept)
     end
 
     # This actually makes sure both fighters joined before it returns.
-    world.join(fighter)
+    @world.join(fighter)
 
-    while text = fighter.connection.gets
-      # Add in the world here.
-      broadcast(text, @fighters)
+    broadcast("Need to print world state right here!", @fighters)
+    while text = fighter.connection.gets.chomp
+      @world.step(fighter, text)
     end
 
     @fighters.delete fighter

@@ -8,6 +8,10 @@ end
 
 class Fighter
   attr_accessor :connection, :name
+
+  def initialize(c)
+    self.connection = c
+  end
 end
 
 class World
@@ -35,6 +39,20 @@ class World
     fighter.connection.puts ("\nStarting the fight!")
   end
 
+  def map
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n" +
+    "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]\n"
+  end
+
+
   def step(fighter, input)
     case input
     when "w"
@@ -48,7 +66,17 @@ class World
     else
       fighter.connection.puts "OTHER!!!!!!"
     end
-    nil
+  end
+end
+
+def connection_limit_reached?
+  return @fighters.size >= 2
+end
+
+def connection_limit_check(c)
+  if connection_limit_reached?
+    c.puts "There are already 2 fighters!"
+    c.close
   end
 end
 
@@ -63,13 +91,10 @@ while (connection = server.accept)
   Thread.new(connection) do |c|
     c.puts
     c.puts "Welcome to textfight!"
-    if @fighters.size >= 2
-      c.puts "There are already 2 fighters!"
-      c.close
-    end
 
-    fighter = Fighter.new
-    fighter.connection = c
+    connection_limit_check(c)
+
+    fighter = Fighter.new(c)
 
     @fighters << fighter
 
@@ -85,7 +110,8 @@ while (connection = server.accept)
     # This actually makes sure both fighters joined before it returns.
     @world.join(fighter)
 
-    broadcast("Need to print world state right here!", @fighters)
+    fighter.connection.puts @world.map
+
     while text = fighter.connection.gets.chomp
       @world.step(fighter, text)
     end

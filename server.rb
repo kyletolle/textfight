@@ -6,10 +6,7 @@ class Server
     @server = TCPServer.new(3939)
     @fighters = []
     @world = World.new
-
-    puts "Server started. Waiting for connections..."
   end
-
 
   def start
     accept_connections
@@ -17,6 +14,8 @@ class Server
 
   private
     def accept_connections
+      puts "Server started. Accepting connections..."
+
       while (connection = @server.accept)
         Thread.new(connection) do |c|
           new_connection(c)

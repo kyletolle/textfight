@@ -58,7 +58,7 @@ class Fighter
     end
 
     def yes_entered?
-      /y|Y/.match (connection.gets.chomp)
+      /y|Y/.match(connection.gets.chomp)
     end
 end
 

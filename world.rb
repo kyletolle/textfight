@@ -1,3 +1,5 @@
+require './cell'
+
 class World
   
   def self.instance
@@ -5,13 +7,13 @@ class World
     @instance
   end
 
-  # 
+  # Asks the user whether they're ready to start the battle
   def join(fighter)
     start_fight_text = "\nDo you want to start the fight? Waiting for a yes: "
     fighter.connection.puts start_fight_text
 
     # While the user inputs anything not starting with a "y", prompt for "yes".
-    while !/y|Y/.match (fighter.connection.gets.chomp)
+    while !/y|Y/.match(fighter.connection.gets.chomp)
       fighter.connection.puts "Please enter 'yes' when you're ready."
       fighter.connection.puts start_fight_text
     end
@@ -27,41 +29,50 @@ class World
       end
     end
 
-    fighter.connection.puts ("\nStarting the fight!")
+    fighter.connection.puts("\nStarting the fight!")
   end
 
   # Returns string of the state of the world.
   def map
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n" +
-    "---------------------------------------\n" +
-    "   |   |   |   |   |   |   |   |   |   \n"
+
+    state_text = ""
+
+    @grid.each.with_index do |row, index|
+      row.each.with_index do |cell, index|
+        state_text += " #{cell} "
+        state_text += "|" if index < 9
+      end
+      state_text << "\n---------------------------------------\n" if index < 9
+    end
+
+    state_text
   end
 
   private
 
+    World_Dimension = 10
+
     def initialize
       @accepted ||= []
+      create_world
+    end
+
+    def create_world
+      create_grid
+    end
+
+    def create_grid
+      @grid = []
+      10.times do
+        row = []
+        10.times { row << Cell.new }
+        @grid << row
+      end
     end
 
     # Did the text the fighter entered start with a y?
     def yes_entered?
-      /y|Y/.match (fighter.connection.gets.chomp)
+      /y|Y/.match(fighter.connection.gets.chomp)
     end
 
     # Have two users joined the world?

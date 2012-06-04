@@ -7,8 +7,9 @@ class World
     @instance
   end
 
-  # Asks the user whether they're ready to start the battle
+  # Places the user on the map
   def join(fighter)
+    #TODO: Need to place the user on the map
   end
 
   # Returns string of the state of the world.
@@ -42,9 +43,9 @@ class World
 
     def create_grid
       @grid = []
-      10.times do
+      World_Dimension.times do
         row = []
-        10.times { row << Cell.new }
+        World_Dimension.times { row << Cell.new }
         @grid << row
       end
     end

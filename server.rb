@@ -31,11 +31,27 @@ class Server
 
       announce_fighter_join
 
+      wait_for_both_fighters
+
       fighter.battle
 
       disconnect(fighter)
 
       announce_fighter_leave
+    end
+
+    def wait_for_both_fighters
+      # If we're still waiting on the other use
+      if !both_fighters_connected?
+        broadcast("\nWaiting for the other fighter to start the fight.")
+        while !both_fighters_connected?
+          sleep 0.5
+        end
+      end
+    end
+
+    def both_fighters_connected?
+      @fighters.size == 2
     end
 
     def new_fighter(connection)

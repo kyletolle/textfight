@@ -9,6 +9,8 @@ class Fighter
   end
 
   def battle
+      connection.puts "\nStarting the fight!\n"
+
       # This actually makes sure both fighters joined before it returns.
       world = World.instance
       world.join(self)
@@ -61,6 +63,7 @@ class Fighter
       end
     end
 
+    # Did the text the fighter entered start with a y?
     def yes_entered?
       /y|Y/.match(connection.gets.chomp)
     end

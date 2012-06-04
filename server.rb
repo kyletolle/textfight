@@ -34,6 +34,8 @@ class Server
       fighter.battle
 
       disconnect(fighter)
+
+      announce_fighter_leave
     end
 
     def new_fighter(connection)
@@ -49,15 +51,19 @@ class Server
       connection.puts "Welcome to textfight!"
     end
 
-    def announce_fighter_join
-      broadcast("\nNew fighter connected!", @fighters)
-      broadcast("All fighters joined so far:", @fighters)
+    def fighters_connected
+      broadcast("All fighters connected:")
       @fighters.each do |f|
-        broadcast("  #{f.name}", @fighters)
+        broadcast("  #{f.name}")
       end
     end
 
-    def broadcast(text, fighters)
+    def announce_fighter_join
+      broadcast("\nNew fighter connected!")
+      fighters_connected
+    end
+
+    def broadcast(text)
       @fighters.each do |fighter|
         fighter.connection.puts text
       end
@@ -72,6 +78,11 @@ class Server
         c.puts "There are already 2 fighters!"
         c.close
       end
+    end
+
+    def announce_fighter_leave
+      broadcast("\nFighter disconnected!")
+      fighters_connected
     end
 
     def disconnect(fighter)

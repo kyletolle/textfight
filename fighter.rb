@@ -16,7 +16,11 @@ class Fighter
       connection.puts world.map
 
       while text = connection.gets.chomp
-        process_input(text)
+        begin
+          process_input(text)
+        rescue QuitException
+          break
+        end
       end
   end
 
@@ -36,9 +40,25 @@ class Fighter
         connection.puts "SSSSSS!"
       when "d"
         connection.puts "DDDDDD!"
+      when "q"
+        confirm_quit
       else
         connection.puts "OTHER!!!!!!"
       end
+    end
+
+    class QuitException < SystemExit
+    end
+
+    def confirm_quit
+      connection.puts "Are you sure you want to quit?"
+      if yes_entered?
+        raise QuitException
+      end
+    end
+
+    def yes_entered?
+      /y|Y/.match (connection.gets.chomp)
     end
 end
 

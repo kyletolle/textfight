@@ -25,11 +25,9 @@ class Server
     def new_connection(connection)
       connection_limit_check(connection)
 
+      welcome(connection)
+
       fighter = new_fighter(connection)
-
-      welcome(fighter)
-
-      fighter.name = ask_name(fighter)
 
       announce_fighter_join
 
@@ -46,14 +44,9 @@ class Server
       fighter
     end
 
-    def welcome(fighter)
-      fighter.connection.puts
-      fighter.connection.puts "Welcome to textfight!"
-    end
-
-    def ask_name(fighter)
-      fighter.connection.puts "What's your name?"
-      fighter.connection.gets.chomp
+    def welcome(connection)
+      connection.puts
+      connection.puts "Welcome to textfight!"
     end
 
     def announce_fighter_join

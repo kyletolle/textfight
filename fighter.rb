@@ -5,6 +5,7 @@ class Fighter
 
   def initialize(connection)
     self.connection = connection
+    self.name = ask_name
   end
 
   def battle
@@ -20,6 +21,11 @@ class Fighter
   end
 
   private
+    def ask_name
+      connection.puts "What's your name?"
+      connection.gets.chomp
+    end
+
     def process_input(input)
       case input
       when "w"

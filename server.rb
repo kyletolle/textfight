@@ -1,11 +1,9 @@
 require './fighter'
-require './world'
 
 class Server
   def initialize
     @server = TCPServer.new(3939)
     @fighters = []
-    @world = World.new
   end
 
   def start
@@ -27,7 +25,7 @@ class Server
     def new_connection(connection)
       connection_limit_check(connection)
 
-      fighter = create_new_fighter(connection)
+      fighter = new_fighter(connection)
 
       welcome(fighter)
 
@@ -35,19 +33,12 @@ class Server
 
       announce_fighter_join
 
-      # This actually makes sure both fighters joined before it returns.
-      @world.join(fighter)
-
-      fighter.connection.puts @world.map
-
-      while text = fighter.connection.gets.chomp
-        @world.step(fighter, text)
-      end
+      fighter.battle
 
       disconnect(fighter)
     end
 
-    def create_new_fighter(connection)
+    def new_fighter(connection)
       fighter = Fighter.new(connection)
 
       @fighters << fighter

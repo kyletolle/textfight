@@ -1,6 +1,8 @@
 class World
-  def initialize
-    @accepted ||= []
+  
+  def self.instance
+    @instance ||= World.new
+    @instance
   end
 
   # 
@@ -28,16 +30,6 @@ class World
     fighter.connection.puts ("\nStarting the fight!")
   end
 
-  # Did the text the fighter entered start with a y?
-  def yes_entered?
-    /y|Y/.match (fighter.connection.gets.chomp)
-  end
-
-  # Have two users joined the world?
-  def both_users_accepted?
-    @accepted.size == 2
-  end
-
   # Returns string of the state of the world.
   def map
     "   |   |   |   |   |   |   |   |   |   \n" +
@@ -61,20 +53,20 @@ class World
     "   |   |   |   |   |   |   |   |   |   \n"
   end
 
-  # Process the user's step, which is indicated by the key they typed.
-  def step(fighter, input)
-    case input
-    when "w"
-      fighter.connection.puts "WWWWWW!"
-    when "a"
-      fighter.connection.puts "AAAAAA!"
-    when "s"
-      fighter.connection.puts "SSSSSS!"
-    when "d"
-      fighter.connection.puts "DDDDDD!"
-    else
-      fighter.connection.puts "OTHER!!!!!!"
+  private
+
+    def initialize
+      @accepted ||= []
     end
-  end
+
+    # Did the text the fighter entered start with a y?
+    def yes_entered?
+      /y|Y/.match (fighter.connection.gets.chomp)
+    end
+
+    # Have two users joined the world?
+    def both_users_accepted?
+      @accepted.size == 2
+    end
 end
 

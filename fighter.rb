@@ -15,13 +15,7 @@ class Fighter
 
       connection.puts world.map
 
-      while text = connection.gets.chomp
-        begin
-          process_input(text)
-        rescue QuitException
-          break
-        end
-      end
+      process_input
   end
 
   private
@@ -30,8 +24,18 @@ class Fighter
       connection.gets.chomp
     end
 
-    def process_input(input)
-      case input
+    def process_input
+      while text = connection.gets.chomp
+        begin
+          parse(text)
+        rescue QuitException
+          break
+        end
+      end
+    end
+
+    def parse(text)
+      case text
       when "w"
         connection.puts "WWWWWW!"
       when "a"

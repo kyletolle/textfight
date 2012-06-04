@@ -37,12 +37,12 @@ class World
 
     state_text = ""
 
-    @grid.each.with_index do |row, index|
-      row.each.with_index do |cell, index|
+    @grid.each.with_index do |row, row_num|
+      row.each.with_index do |cell, col_num|
         state_text += " #{cell} "
-        state_text += "|" if index < 9
+        state_text += "|" if col_num < 9
       end
-      state_text << "\n---------------------------------------\n" if index < 9
+      state_text << "\n---------------------------------------\n" if row_num < 9
     end
 
     state_text

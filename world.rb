@@ -10,6 +10,8 @@ class World
   # Places the user on the map
   def join(fighter)
     @fighters << fighter
+    coords = @start_coords.pop
+    @grid[coords[0]][coords[1]].hold(fighter)
   end
 
   # Returns string of the state of the world.
@@ -33,6 +35,7 @@ class World
 
     def initialize
       @fighters ||= []
+      @start_coords = [[0,0], [9,9]]
       create_world
     end
 

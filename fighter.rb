@@ -12,10 +12,10 @@ class Fighter
     connection.puts "\nStarting the fight!\n"
 
     # This actually makes sure both fighters joined before it returns.
-    world = World.instance
-    world.join(self)
+    @world = World.instance
+    @world.join(self)
 
-    connection.puts world.map
+    connection.puts @world.map
 
     process_input
   end
@@ -51,6 +51,9 @@ class Fighter
       else
         connection.puts "OTHER!!!!!!"
       end
+
+      connection.puts
+      connection.puts @world.map
     end
 
     class QuitException < SystemExit

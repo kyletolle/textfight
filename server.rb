@@ -41,7 +41,7 @@ class Server
     end
 
     def wait_for_both_fighters
-      # If we're still waiting on the other use
+      # If we're still waiting on the other fighter
       if !both_fighters_connected?
         broadcast("\nWaiting for the other fighter to start the fight.")
         while !both_fighters_connected?

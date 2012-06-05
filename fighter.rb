@@ -9,15 +9,15 @@ class Fighter
   end
 
   def battle
-      connection.puts "\nStarting the fight!\n"
+    connection.puts "\nStarting the fight!\n"
 
-      # This actually makes sure both fighters joined before it returns.
-      world = World.instance
-      world.join(self)
+    # This actually makes sure both fighters joined before it returns.
+    world = World.instance
+    world.join(self)
 
-      connection.puts world.map
+    connection.puts world.map
 
-      process_input
+    process_input
   end
 
   private

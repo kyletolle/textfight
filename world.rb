@@ -9,12 +9,11 @@ class World
 
   # Places the user on the map
   def join(fighter)
-    #TODO: Need to place the user on the map
+    @fighters << fighter
   end
 
   # Returns string of the state of the world.
   def map
-
     state_text = ""
 
     @grid.each.with_index do |row, row_num|

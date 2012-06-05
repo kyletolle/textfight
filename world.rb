@@ -29,10 +29,10 @@ class World
 
   private
 
-    World_Dimension = 10
+    Dimension = 10
 
     def initialize
-      @accepted ||= []
+      @fighters ||= []
       create_world
     end
 
@@ -42,9 +42,9 @@ class World
 
     def create_grid
       @grid = []
-      World_Dimension.times do
+      Dimension.times do
         row = []
-        World_Dimension.times { row << Cell.new }
+        Dimension.times { row << Cell.new }
         @grid << row
       end
     end

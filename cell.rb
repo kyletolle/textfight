@@ -3,6 +3,10 @@ class Cell
     @fighters = []
   end
 
+  def holds?(fighter)
+    @fighters.include?(fighter)
+  end
+
   def hold(fighter)
     @fighters << fighter
   end

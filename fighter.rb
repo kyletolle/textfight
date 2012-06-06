@@ -15,8 +15,6 @@ class Fighter
     @world = World.instance
     @world.join(self)
 
-    connection.puts @world.map
-
     process_input
   end
 
@@ -39,7 +37,7 @@ class Fighter
     def parse(text)
       case text
       when "w"
-        connection.puts "WWWWWW!"
+        @world.up(self)
       when "a"
         connection.puts "AAAAAA!"
       when "s"
@@ -51,9 +49,6 @@ class Fighter
       else
         connection.puts "OTHER!!!!!!"
       end
-
-      connection.puts
-      connection.puts @world.map
     end
 
     class QuitException < SystemExit

@@ -12,6 +12,10 @@ class World
     @fighters << fighter
     coords = @start_coords.pop
     @grid[coords[0]][coords[1]].hold(fighter)
+
+    if @fighters.size == 2
+      push_map
+    end
   end
 
   # Returns string of the state of the world.
@@ -27,6 +31,40 @@ class World
     end
 
     state_text
+  end
+
+  def locate(fighter)
+    @grid.each.with_index do |row, row_num|
+      row.each.with_index do |cell, col_num|
+        if cell.holds?(fighter)
+          return row_num, col_num
+        end
+      end
+    end
+    return nil,nil
+  end
+
+  def up(fighter)
+    row, col = locate(fighter) 
+    @grid[row][col].remove(fighter)
+    @grid[((row-1)+10)%10][col].hold(fighter)
+
+    push_map
+  end
+
+  def down(fighter)
+
+    push_map
+  end
+
+  def left(fighter)
+
+    push_map
+  end
+
+  def right(fighter)
+
+    push_map
   end
 
   private
@@ -49,6 +87,13 @@ class World
         row = []
         Dimension.times { row << Cell.new }
         @grid << row
+      end
+    end
+
+    def push_map
+      @fighters.each do |fighter|
+        fighter.connection.puts "\n\n\n\n\n\n\n\n\n\n"
+        fighter.connection.puts map
       end
     end
 end

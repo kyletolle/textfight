@@ -29,12 +29,13 @@ class World
     state_text
   end
 
-  
-
   def up(fighter)
     row, col = locate(fighter) 
-    @grid[row][col].remove(fighter)
-    @grid[((row-1)+10)%10][col].hold(fighter)
+    old_cell = @grid[row][col]
+    old_cell.remove(fighter)
+
+    new_cell = @grid[((row-1)+10)%10][col]
+    new_cell.hold(fighter)
 
     push_map
   end

@@ -8,8 +8,9 @@ class Fighter
     self.name = ask_name
   end
 
-  def battle
-    connection.puts "\nStarting the fight!\n"
+  # Place the fighter in the world.
+  def spawn
+    connection.puts "\nSpawning in the world!\n"
 
     # This actually makes sure both fighters joined before it returns.
     @world = World.instance

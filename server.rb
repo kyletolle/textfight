@@ -21,14 +21,19 @@ class Server
 
     def accept(connection)
       Thread.new(connection) do |c|
-        connection_limit_check(connection)
+        # Don't want too many people to connect.
+        connection_limit_check(c)
 
-        fighter = join_fighter(connection)
+        # Set up the fighter.
+        fighter = join_fighter(c)
 
+        # Need all fighters to join before starting the game.
         wait_for_both_fighters
 
-        fighter.battle
+        # Start the game!
+        fighter.spawn
 
+        # Game is finished, so disconnect.
         disconnect(fighter)
       end
     end

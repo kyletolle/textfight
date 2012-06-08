@@ -15,28 +15,22 @@ class Server
       puts "Server started. Accepting connections..."
 
       while (connection = @server.accept)
-        Thread.new(connection) do |c|
-          new_connection(c)
-        end
+        accept(connection)
       end
     end
 
-    def new_connection(connection)
-      connection_limit_check(connection)
+    def accept(connection)
+      Thread.new(connection) do |c|
+        connection_limit_check(connection)
 
-      welcome(connection)
+        fighter = join_fighter(connection)
 
-      fighter = new_fighter(connection)
+        wait_for_both_fighters
 
-      announce_fighter_join
+        fighter.battle
 
-      wait_for_both_fighters
-
-      fighter.battle
-
-      disconnect(fighter)
-
-      announce_fighter_leave
+        disconnect(fighter)
+      end
     end
 
     def wait_for_both_fighters
@@ -51,6 +45,16 @@ class Server
 
     def both_fighters_connected?
       @fighters.size == 2
+    end
+
+    def join_fighter(connection)
+      welcome(connection)
+
+      fighter = new_fighter(connection)
+
+      announce_fighter_join
+
+      fighter
     end
 
     def new_fighter(connection)
@@ -103,6 +107,8 @@ class Server
     def disconnect(fighter)
       @fighters.delete fighter
       fighter.connection.close
+
+      announce_fighter_leave
     end
 end
 

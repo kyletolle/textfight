@@ -14,18 +14,6 @@ class World
     place_user(fighter)
   end
 
-  def place_user(fighter)
-    cell = starting_cell
-    cell.hold(fighter)
-
-    push_map
-  end
-
-  def get_starting_cell
-    row, col = @start_coords.pop
-    cell = @grid[row][col]
-  end
-  
   # Returns string of the state of the world.
   def map
     state_text = ""
@@ -41,16 +29,7 @@ class World
     state_text
   end
 
-  def locate(fighter)
-    @grid.each.with_index do |row, row_num|
-      row.each.with_index do |cell, col_num|
-        if cell.holds?(fighter)
-          return row_num, col_num
-        end
-      end
-    end
-    return nil,nil
-  end
+  
 
   def up(fighter)
     row, col = locate(fighter) 
@@ -98,11 +77,34 @@ class World
       end
     end
 
+    def place_user(fighter)
+      cell = starting_cell
+      cell.hold(fighter)
+
+      push_map
+    end
+
+    def starting_cell
+      row, col = @start_coords.pop
+      cell = @grid[row][col]
+    end
+  
     def push_map
       @fighters.each do |fighter|
         fighter.connection.puts "\n\n\n\n\n\n\n\n\n\n"
         fighter.connection.puts map
       end
+    end
+
+    def locate(fighter)
+      @grid.each.with_index do |row, row_num|
+        row.each.with_index do |cell, col_num|
+          if cell.holds?(fighter)
+            return row_num, col_num
+          end
+        end
+      end
+      return nil,nil
     end
 end
 

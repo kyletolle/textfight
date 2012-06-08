@@ -19,7 +19,6 @@ class Server
           new_connection(c)
         end
       end
-
     end
 
     def new_connection(connection)

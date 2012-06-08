@@ -10,14 +10,22 @@ class World
   # Places the user on the map
   def join(fighter)
     @fighters << fighter
-    coords = @start_coords.pop
-    @grid[coords[0]][coords[1]].hold(fighter)
 
-    if @fighters.size == 2
-      push_map
-    end
+    place_user(fighter)
   end
 
+  def place_user(fighter)
+    cell = starting_cell
+    cell.hold(fighter)
+
+    push_map
+  end
+
+  def get_starting_cell
+    row, col = @start_coords.pop
+    cell = @grid[row][col]
+  end
+  
   # Returns string of the state of the world.
   def map
     state_text = ""

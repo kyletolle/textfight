@@ -66,7 +66,7 @@ class Fighter
         confirm_quit
 
       else
-        connection.puts "OTHER!!!!!!"
+        invalid_direction
       end
     end
 
@@ -93,6 +93,14 @@ class Fighter
 
     def right
       location[1] = ((location[1]+1)%10)
+    end
+
+    def invalid_direction
+      connection.puts "Invalid movement. Please use WASD to move!"
+
+      sleep(0.5)
+
+      @world.render
     end
 
     def confirm_quit

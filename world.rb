@@ -12,25 +12,6 @@ class World
     push_map
   end
 
-  # Returns string of the state of the world.
-  def map
-    state_text = ""
-
-    Dimension.times do |x|
-      Dimension.times do |y|
-        state_text += " #{render_cell(x,y)} "
-
-        # Border between cells
-        state_text += "|" if y < 9
-      end
-
-      # Spacer text between rows
-      state_text << "\n---------------------------------------\n" if x < 9
-    end
-
-    state_text
-  end
-
   def starting_location!
     @start_coords.pop
   end
@@ -38,7 +19,7 @@ class World
   def fighter_moved
     push_map
   end
-  
+
   private
 
     Dimension = 10
@@ -46,6 +27,25 @@ class World
     def initialize
       @fighters ||= []
       @start_coords = [[0,0], [9,9]]
+    end
+
+    # Returns string of the state of the world.
+    def map
+      state_text = ""
+
+      Dimension.times do |x|
+        Dimension.times do |y|
+          state_text += " #{render_cell(x,y)} "
+
+          # Border between cells
+          state_text += "|" if y < 9
+        end
+
+        # Spacer text between rows
+        state_text << "\n---------------------------------------\n" if x < 9
+      end
+
+      state_text
     end
 
     def push_map

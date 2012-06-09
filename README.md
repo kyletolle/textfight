@@ -1,9 +1,9 @@
 # What is textfight?
 textfight is a simple, text-based client/server application that allows fighters to join and wander around the world.
 
-# Using textfight
-
 The ability to do battle with the other fighter will come soon!
+
+# Using textfight
 
 ## Start the server
 `ruby textfight_server.rb`

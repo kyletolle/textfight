@@ -49,16 +49,22 @@ class Fighter
 
     def parse(text)
       case text
+
       when /[w|W]/
         move(:up)
-      when "a"
-        connection.puts "AAAAAA!"
-      when "s"
-        connection.puts "SSSSSS!"
-      when "d"
-        connection.puts "DDDDDD!"
+
+      when /[a|A]/
+        move(:left)
+
+      when /[s|S]/
+        move(:down)
+
+      when /[d|D]/
+        move(:right)
+
       when "q"
         confirm_quit
+
       else
         connection.puts "OTHER!!!!!!"
       end
@@ -75,6 +81,18 @@ class Fighter
 
     def up
       location[0] = (((location[0]-1)+10)%10)
+    end
+
+    def left
+      location[1] = (((location[1]-1)+10)%10)
+    end
+
+    def down
+      location[0] = ((location[0]+1)%10)
+    end
+
+    def right
+      location[1] = ((location[1]+1)%10)
     end
 
     def confirm_quit

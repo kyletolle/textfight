@@ -1,22 +1,32 @@
 require './world'
 
 class Fighter
-  attr_accessor :connection, :name
+  attr_accessor :connection, :name, :location
 
   def initialize(connection)
     self.connection = connection
     self.name = ask_name
+
+    @world = World.instance
+    self.location = @world.starting_location!
   end
 
   # Place the fighter in the world.
   def spawn
     connection.puts "\nSpawning in the world!\n"
 
-    # This actually makes sure both fighters joined before it returns.
     @world = World.instance
     @world.join(self)
 
     process_input
+  end
+
+  def icon
+    name[0]
+  end
+
+  def located_here?(x,y)
+    self.location == [x,y]
   end
 
   private
@@ -29,6 +39,8 @@ class Fighter
       while text = connection.gets.chomp
         begin
           parse(text)
+
+        # Keep parsing text until we're told to quit.
         rescue QuitException
           break
         end
@@ -38,7 +50,7 @@ class Fighter
     def parse(text)
       case text
       when "w"
-        @world.up(self)
+        move(:up)
       when "a"
         connection.puts "AAAAAA!"
       when "s"
@@ -53,6 +65,16 @@ class Fighter
     end
 
     class QuitException < SystemExit
+    end
+
+    def move(direction)
+      send(direction)
+
+      @world.fighter_moved
+    end
+
+    def up
+      location[0] = (((location[0]-1)+10)%10)
     end
 
     def confirm_quit

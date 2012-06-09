@@ -28,6 +28,10 @@ class World
   def render
     push_map
   end
+
+  def self.reset
+    @instance = World.new
+  end
   
   private
 

@@ -21,20 +21,28 @@ class Server
 
     def accept(connection)
       Thread.new(connection) do |c|
-        # Don't want too many people to connect.
-        connection_limit_check(c)
+        # Rescues errors with connection.
+        begin
+          # Don't want too many people to connect.
+          connection_limit_check(c)
 
-        # Set up the fighter.
-        fighter = join_fighter(c)
+          # Set up the fighter.
+          fighter = join_fighter(c)
 
-        # Need all fighters to join before starting the game.
-        wait_for_both_fighters
+          # Need all fighters to join before starting the game.
+          wait_for_both_fighters
 
-        # Start the game!
-        fighter.spawn
+          # Start the game!
+          fighter.spawn
 
-        # Game is finished, so disconnect.
-        disconnect(fighter)
+          # Game is finished, so disconnect.
+          disconnect(fighter)
+
+        # Fighter disconnecting raises an exception.
+        # We need to reset our state so we can accept more connections.
+        rescue
+          reset
+        end
       end
     end
 
@@ -114,6 +122,24 @@ class Server
       fighter.connection.close
 
       announce_fighter_leave
+    end
+
+    # 
+    def reset
+      @fighters.each do |fighter|
+        begin
+          fighter.connection.puts
+            "Error occurred. Other fighter has left. Disconnecting."
+          fighter.connection.close
+
+        rescue
+          # One of the fighters is dead, so this keeps server from blowing up.
+
+        ensure
+          # We really need to remove the fighter.
+          @fighters.delete(fighter)
+        end
+      end
     end
 end
 

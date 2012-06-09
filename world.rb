@@ -27,10 +27,12 @@ class World
   private
 
     Dimension = 10
+    Min_Coord = 0
+    Max_Coord = Dimension-1
 
     def initialize
       @fighters ||= []
-      @start_coords = [[0,0], [9,9]]
+      @start_coords = [[Min_Coord,Min_Coord], [Max_Coord,Max_Coord]]
     end
 
     # Returns string of the state of the world.
@@ -42,11 +44,11 @@ class World
           state_text += " #{render_cell(x,y)} "
 
           # Border between cells
-          state_text += "|" if y < 9
+          state_text += "|" if y < Max_Coord
         end
 
         # Spacer text between rows
-        state_text << "\n---------------------------------------\n" if x < 9
+        state_text << "\n---------------------------------------\n" if x < Max_Coord
       end
 
       state_text

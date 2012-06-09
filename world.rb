@@ -20,6 +20,10 @@ class World
     push_map
   end
 
+  def render
+    push_map
+  end
+  
   private
 
     Dimension = 10

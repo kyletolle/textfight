@@ -21,24 +21,29 @@ class Fighter
     process_input
   end
 
+  # Character to represent this fighter.
   def icon
     name[0]
   end
 
+  # Is the fighter at the given coordinates?
   def located_here?(x,y)
     self.location == [x,y]
   end
 
   private
+    ###
+    # User interaction
+    ###
     def ask_name
       connection.puts "What's your name?"
       connection.gets.chomp
     end
 
     def process_input
-      while text = connection.gets.chomp
+      while movement = connection.gets.chomp
         begin
-          parse(text)
+          parse(movement)
 
         # Keep parsing text until we're told to quit.
         rescue QuitException
@@ -47,22 +52,22 @@ class Fighter
       end
     end
 
-    def parse(text)
-      case text
+    def parse(movement)
+      case movement
 
-      when /[w|W]/
+      when up?
         move(:up)
 
-      when /[a|A]/
+      when left?
         move(:left)
 
-      when /[s|S]/
+      when down?
         move(:down)
 
-      when /[d|D]/
+      when right?
         move(:right)
 
-      when "q"
+      when quit?
         confirm_quit
 
       else
@@ -70,6 +75,32 @@ class Fighter
       end
     end
 
+    ###
+    # Movement text
+    ###
+    def up?
+      /[w|W]/
+    end
+
+    def left?
+      /[a|A]/
+    end
+
+    def down?
+      /[s|S]/
+    end
+
+    def right?
+      /[d|D]/
+    end
+
+    def quit?
+      /[q|Q]/
+    end
+
+    ###
+    # Movement
+    ###
     def move(direction)
       send(direction)
 
@@ -77,19 +108,19 @@ class Fighter
     end
 
     def up
-      location[0] = (((location[0]-1)+10)%10)
+      self.x = (((x-1)+10)%10)
     end
 
     def left
-      location[1] = (((location[1]-1)+10)%10)
+      self.y = (((y-1)+10)%10)
     end
 
     def down
-      location[0] = ((location[0]+1)%10)
+      self.x = ((x+1)%10)
     end
 
     def right
-      location[1] = ((location[1]+1)%10)
+      self.y = ((y+1)%10)
     end
 
     def invalid_direction
@@ -100,6 +131,28 @@ class Fighter
       @world.render
     end
 
+    ###
+    # Coordinates
+    ###
+    def x
+      location[0]
+    end
+
+    def x=(point)
+      location[0] = point
+    end
+
+    def y
+      location[1]
+    end
+
+    def y=(point)
+      location[1] = point
+    end
+
+    ###
+    # Quitting
+    ###
     class QuitException < SystemExit
     end
 

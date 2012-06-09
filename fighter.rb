@@ -70,9 +70,6 @@ class Fighter
       end
     end
 
-    class QuitException < SystemExit
-    end
-
     def move(direction)
       send(direction)
 
@@ -101,6 +98,9 @@ class Fighter
       sleep(0.5)
 
       @world.render
+    end
+
+    class QuitException < SystemExit
     end
 
     def confirm_quit

@@ -48,17 +48,29 @@ class World
         end
 
         # Spacer text between rows
-        state_text << "\n---------------------------------------\n" if x < Max_Coord
+        state_text << row_sep if x < Max_Coord
       end
 
       state_text
     end
 
+    def row_sep
+      text = "\n"
+      39.times { text += "-" }
+      text += "\n"
+    end
+
     def push_map
       @fighters.each do |fighter|
-        fighter.connection.puts "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+        fighter.connection.puts blank_lines
         fighter.connection.puts map
       end
+    end
+
+    def blank_lines
+      blank_lines = ""
+      15.times { blank_lines += "\n" }
+      blank_lines
     end
 
     def render_cell(x,y)

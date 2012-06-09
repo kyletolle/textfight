@@ -160,6 +160,9 @@ class Fighter
       connection.puts "Are you sure you want to quit?"
       if yes_entered?
         raise QuitException
+
+      else
+        @world.render
       end
     end
 

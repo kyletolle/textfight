@@ -1,8 +1,11 @@
 require './world'
 
+# Represents the fighters that interact with the server.
 class Fighter
+  # Publicly accessible methods.
   attr_accessor :connection, :name, :location
 
+  # Create the fighter
   def initialize(connection)
     self.connection = connection
     self.name = ask_name
@@ -35,11 +38,13 @@ class Fighter
     ###
     # User interaction
     ###
+    # Get the fighter's name.
     def ask_name
       connection.puts "What's your name?"
       connection.gets.chomp
     end
 
+    # Handle the input from the fighter.
     def process_input
       while movement = connection.gets.chomp
         begin
@@ -52,9 +57,9 @@ class Fighter
       end
     end
 
+    # Parse a string into a movement.
     def parse(movement)
       case movement
-
       when up?
         move(:up)
 
@@ -107,27 +112,32 @@ class Fighter
       @world.fighter_moved
     end
 
+    # Move the fighter up in the world, wrapping around the edges.
     def up
       self.x = (((x-1)+10)%10)
     end
 
+    # Move the fighter left in the world, wrapping around the edges.
     def left
       self.y = (((y-1)+10)%10)
     end
 
+    # Move the fighter down in the world, wrapping around the edges.
     def down
       self.x = ((x+1)%10)
     end
 
+    # Move the fighter right in the world, wrapping around the edges.
     def right
       self.y = ((y+1)%10)
     end
 
+    # Fighter gave an invalid movement; let them know.
     def invalid_direction
       connection.puts "Invalid movement. Please use WASD to move!"
 
+      # Show the text for a short time before showing the world again.
       sleep(0.5)
-
       @world.render
     end
 
@@ -156,6 +166,7 @@ class Fighter
     class QuitException < SystemExit
     end
 
+    # Make sure the user wants to quit.
     def confirm_quit
       connection.puts "Are you sure you want to quit?"
       if yes_entered?
@@ -166,7 +177,7 @@ class Fighter
       end
     end
 
-    # Did the text the fighter entered start with a y?
+    # Does the fighter enter text starting with a 'y'?
     def yes_entered?
       /y|Y/.match(connection.gets.chomp)
     end

@@ -52,8 +52,9 @@ class World
     def random_starting_points
       points = []
       2.times do |index|
+        # Makes sure users don't start at the same point.
         begin
-          point = [rand_point, rand_point]
+          point = rand_point
         end while points.include?(point)
 
         points[index] = point
@@ -62,9 +63,12 @@ class World
     end
 
     def rand_point
-      rand(Min_Coord...Max_Coord)
+      [rand_coord, rand_coord]
     end
 
+    def rand_coord
+      rand(Min_Coord...Max_Coord)
+    end
 
     # Returns string of the state of the world.
     def map

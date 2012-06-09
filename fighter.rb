@@ -49,7 +49,7 @@ class Fighter
 
     def parse(text)
       case text
-      when "w"
+      when /[w|W]/
         move(:up)
       when "a"
         connection.puts "AAAAAA!"

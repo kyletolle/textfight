@@ -1,25 +1,30 @@
+# Represents the world the fighters see.
 class World
   
+  # Return a single instance of this class.
   def self.instance
     @instance ||= World.new
     @instance
   end
 
-  # Places the user on the map
+  # Places the user on the map.
   def join(fighter)
     @fighters << fighter
 
     push_map
   end
 
+  # Return a pair of starting coordinates.
   def starting_location!
     @start_coords.pop
   end
 
+  # Perform actions when notified a fighter has moved.
   def fighter_moved
-    push_map
+    render
   end
 
+  # Render the world to each of the fighters.
   def render
     push_map
   end
@@ -30,6 +35,7 @@ class World
     Min_Coord = 0
     Max_Coord = Dimension-1
 
+    # Set up the world.
     def initialize
       @fighters ||= []
       @start_coords = [[Min_Coord,Min_Coord], [Max_Coord,Max_Coord]]
@@ -39,27 +45,31 @@ class World
     def map
       state_text = ""
 
+      # Loop over each cell
       Dimension.times do |x|
         Dimension.times do |y|
+          # Render the text for the cell
           state_text += " #{render_cell(x,y)} "
 
-          # Border between cells
+          # Border between cells.
           state_text += "|" if y < Max_Coord
         end
 
-        # Spacer text between rows
+        # Separator text between rows
         state_text << row_sep if x < Max_Coord
       end
 
       state_text
     end
 
+    # Returns a row separator string.
     def row_sep
       text = "\n"
       39.times { text += "-" }
       text += "\n"
     end
 
+    # Push the map to each of the fighters.
     def push_map
       @fighters.each do |fighter|
         fighter.connection.puts blank_lines
@@ -67,12 +77,14 @@ class World
       end
     end
 
+    # Returns multiple newlines.
     def blank_lines
       blank_lines = ""
       15.times { blank_lines += "\n" }
       blank_lines
     end
 
+    # Returns a character representation of the given cell.
     def render_cell(x,y)
       case num_fighters_in_cell(x,y)
       # Two fighters in the cell, so we display a !.
@@ -89,6 +101,7 @@ class World
       end
     end
 
+    # Gets the icon for the fighter in a given cell.
     def fighter_icon_at(x, y)
       fighter_in_cell =
         @fighters.select {|fighter| fighter.located_here?(x, y)}.first
@@ -96,6 +109,7 @@ class World
       fighter_in_cell.icon
     end
 
+    # Returns the number of fighters in a given cell.
     def num_fighters_in_cell(x,y)
       count = 0
 

@@ -42,7 +42,11 @@ class World
     # Set up the world.
     def initialize
       @fighters ||= []
-      @start_coords = [[Min_Coord,Min_Coord], [Max_Coord,Max_Coord]]
+      @start_coords = starting_points
+    end
+
+    def starting_points
+      [[Min_Coord,Min_Coord], [Max_Coord,Max_Coord]]
     end
 
     # Returns string of the state of the world.

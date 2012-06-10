@@ -55,10 +55,6 @@ class Fighter
       while movement = connection.gets.chomp
         begin
           parse(movement)
-
-        # Keep parsing text until we're told to quit.
-        rescue QuitException
-          break
         end
       end
     end
@@ -169,14 +165,11 @@ class Fighter
     ###
     # Quitting
     ###
-    class QuitException < SystemExit
-    end
-
     # Make sure the user wants to quit.
     def confirm_quit
       connection.puts "Are you sure you want to quit?"
       if yes_entered?
-        raise QuitException
+        connection.close
 
       else
         @world.render

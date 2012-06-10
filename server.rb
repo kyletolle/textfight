@@ -128,8 +128,7 @@ class Server
     def reset
       @fighters.each do |fighter|
         begin
-          fighter.connection.puts(
-            "Other fighter left. Disconnecting.")
+          fighter.connection.puts("Other fighter left. Disconnecting.")
           fighter.connection.close
 
         # One of the fighters is dead, so this keeps server from blowing up.

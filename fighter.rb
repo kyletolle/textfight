@@ -46,8 +46,17 @@ class Fighter
     ###
     # Get the fighter's name.
     def ask_name
-      connection.puts "What's your name?"
-      connection.gets.chomp
+      begin
+        connection.puts "What's your name? (10 alphanum/spaces only, please.)"
+        # Only grab 10 characters.
+        name = connection.gets.chomp[0..10]
+      end while !only_chars?(name)
+      name
+    end
+
+    # Check these are only word characters and spaces.
+    def only_chars?(text)
+      text.match /^\w[\w| ]+$/i
     end
 
     # Handle the input from the fighter.

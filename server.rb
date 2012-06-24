@@ -71,7 +71,7 @@ class Server
     end
 
     def new_fighter(connection)
-      fighter = Fighter.new(connection)
+      fighter = Fighter.new(connection, @fighters.size)
 
       @fighters << fighter
 

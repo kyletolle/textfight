@@ -3,11 +3,12 @@ require './world'
 # Represents the fighters that interact with the server.
 class Fighter
   # Publicly accessible methods.
-  attr_accessor :connection, :name, :location
+  attr_accessor :connection, :name, :location, :number
 
   # Create the fighter
-  def initialize(connection)
+  def initialize(connection, number)
     self.connection = connection
+    self.number = number
     self.name = ask_name
 
     @world = World.instance
@@ -32,7 +33,7 @@ class Fighter
 
   # Character to represent this fighter.
   def icon
-    name[0]
+    self.number
   end
 
   # Is the fighter at the given coordinates?

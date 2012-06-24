@@ -75,13 +75,12 @@ class World
       state_text = ""
 
       # Get the user info string
-      user_text = "Players: "
+      fighter_text = "Players: "
       @fighters.each.with_index do |fighter, index|
-        user_text += "##{index}: #{fighter.name}"
-        user_text += ",  " if index == 0
-        user_text += "\n" if index == 1
+        fighter_text += "##{index}: #{fighter.name}"
+        fighter_text += ",  " if index == 0
       end
-      state_text += user_text
+      state_text += fighter_text + "\n"
 
       # Loop over each cell
       Dimension.times do |x|

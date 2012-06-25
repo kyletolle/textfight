@@ -57,7 +57,7 @@ class Fighter
 
     # Check these are only word characters and spaces.
     def only_chars?(text)
-      text.match /^\w[\w| ]+$/i
+      text.match(/^\w[\w| ]+$/i)
     end
 
     # Handle the input from the fighter.

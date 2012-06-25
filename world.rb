@@ -67,7 +67,7 @@ class World
     end
 
     def rand_coord
-      rand(Min_Coord...Max_Coord)
+      rand(Dimension)
     end
 
     # Returns string of the state of the world.

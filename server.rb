@@ -2,6 +2,9 @@ require './fighter'
 
 MaxFighters = 2
 
+class ConnectionLimitException < Exception
+end
+
 class Server
   def initialize
     @server = TCPServer.new(3939)
@@ -39,6 +42,9 @@ class Server
 
           # Game is finished, so disconnect.
           disconnect(fighter)
+
+        rescue ConnectionLimitException
+	  puts "Fighter limit reached. Extra fighter connection closed."
 
         # Fighter disconnecting raises an exception.
         # We need to reset our state so we can accept more connections.
@@ -111,6 +117,8 @@ class Server
       if connection_limit_reached?
         c.puts "There are already #{MaxFighters} fighters!"
         c.close
+
+	raise ConnectionLimitException
       end
     end
 

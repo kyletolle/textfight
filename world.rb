@@ -1,11 +1,33 @@
+require './battle'
+
+# From http://c2.com/cgi/wiki?RubySingleton
+module ThreadSafeSingleton
+  def self.append_features(clazz)
+    require 'thread'
+      clazz.module_eval { 
+      private_class_method :new
+      @instance_mutex = Mutex.new
+      def self.instance 
+        @instance_mutex.synchronize {
+          @instance = new unless @instance
+          @instance
+        }
+      end
+
+      def self.reset
+        @instance_mutex.synchronize {
+          @instance = nil
+        }
+      end
+    }
+  end
+end
+
 # Represents the world the fighters see.
 class World
+  include ThreadSafeSingleton
   
-  # Return a single instance of this class.
-  def self.instance
-    @instance ||= World.new
-    @instance
-  end
+  class FightFinished < StandardError; end
 
   # Places the user on the map.
   def join(fighter)
@@ -24,15 +46,18 @@ class World
   # Perform actions when notified a fighter has moved.
   def fighter_moved
     render
+
+    if fighters_in_same_cell?
+      Battle.new(@fighters) 
+      
+      # Battle is finished, so disconnect the fighters.
+      raise FightFinished
+    end
   end
 
   # Render the world to each of the fighters.
   def render
     push_map
-  end
-
-  def self.reset
-    @instance = World.new
   end
 
   private
@@ -157,6 +182,10 @@ class World
       end
 
       count
+    end
+
+    def fighters_in_same_cell?
+      @fighters[0].location == @fighters[1].location
     end
 end
 

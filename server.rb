@@ -128,16 +128,16 @@ class Server
     def reset
       @fighters.each do |fighter|
         begin
-          fighter.connection.puts("Other fighter left. Disconnecting.")
           fighter.connection.close
 
-        # One of the fighters is dead, so this keeps server from blowing up.
+        # One fighter's connection is dead, so this keeps server alive.
         rescue
           nil
 
         ensure
-          # We really need to remove the fighter.
-          @fighters.delete(fighter)
+          # Really need to reset list of fighters and the world.
+          @fighters = []
+          World.reset
         end
       end
     end

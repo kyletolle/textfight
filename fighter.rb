@@ -23,12 +23,6 @@ class Fighter
     @world.render
 
     process_input
-
-  # Fighter disconnecting raises an exception, which we can catch.
-  # Since one of the fighters is gone, we want to reset the world.
-  rescue
-    World.reset
-    raise
   end
 
   # Character to represent this fighter.

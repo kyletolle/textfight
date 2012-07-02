@@ -1,11 +1,30 @@
+# From http://c2.com/cgi/wiki?RubySingleton
+module ThreadSafeSingleton
+  def self.append_features(clazz)
+    require 'thread'
+      clazz.module_eval { 
+      private_class_method :new
+      @instance_mutex = Mutex.new
+      def self.instance 
+        @instance_mutex.synchronize {
+          @instance = new unless @instance
+          @instance
+        }
+      end
+
+      def self.reset
+        @instance_mutex.synchronize {
+          @instance = nil
+        }
+      end
+    }
+  end
+end
+
 # Represents the world the fighters see.
 class World
+  include ThreadSafeSingleton
   
-  # Return a single instance of this class.
-  def self.instance
-    @instance ||= World.new
-    @instance
-  end
 
   # Places the user on the map.
   def join(fighter)
@@ -29,10 +48,6 @@ class World
   # Render the world to each of the fighters.
   def render
     push_map
-  end
-
-  def self.reset
-    @instance = World.new
   end
 
   private

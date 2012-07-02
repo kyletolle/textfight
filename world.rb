@@ -1,3 +1,5 @@
+require './battle'
+
 # From http://c2.com/cgi/wiki?RubySingleton
 module ThreadSafeSingleton
   def self.append_features(clazz)
@@ -25,6 +27,7 @@ end
 class World
   include ThreadSafeSingleton
   
+  class FightFinished < StandardError; end
 
   # Places the user on the map.
   def join(fighter)
@@ -43,6 +46,13 @@ class World
   # Perform actions when notified a fighter has moved.
   def fighter_moved
     render
+
+    if fighters_in_same_cell?
+      Battle.new(@fighters) 
+      
+      # Battle is finished, so disconnect the fighters.
+      raise FightFinished
+    end
   end
 
   # Render the world to each of the fighters.
@@ -172,6 +182,10 @@ class World
       end
 
       count
+    end
+
+    def fighters_in_same_cell?
+      @fighters[0].location == @fighters[1].location
     end
 end
 

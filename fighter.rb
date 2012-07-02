@@ -6,12 +6,12 @@ class Fighter
   attr_accessor :connection, :name, :location, :number
 
   # Create the fighter
-  def initialize(connection, number)
+  def initialize(connection)
     self.connection = connection
-    self.number = number
     self.name = ask_name
 
     @world = World.instance
+    self.number = @world.join(self)
     self.location = @world.starting_location!
   end
 
@@ -19,8 +19,7 @@ class Fighter
   def spawn
     connection.puts "\nSpawning in the world!\n"
 
-    @world = World.instance
-    @world.join(self)
+    @world.render
 
     process_input
 
@@ -62,6 +61,7 @@ class Fighter
 
     # Handle the input from the fighter.
     def process_input
+
       while movement = connection.gets.chomp
         begin
           parse(movement)

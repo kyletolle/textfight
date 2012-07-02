@@ -9,9 +9,11 @@ class World
 
   # Places the user on the map.
   def join(fighter)
+    fighter_number = @fighters.size
+
     @fighters << fighter
 
-    push_map
+    fighter_number
   end
 
   # Return a pair of starting coordinates.
@@ -32,7 +34,7 @@ class World
   def self.reset
     @instance = World.new
   end
-  
+
   private
 
     Dimension = 10

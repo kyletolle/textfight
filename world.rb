@@ -48,7 +48,7 @@ class World
     render
 
     if fighters_in_same_cell?
-      Battle.new(@fighters) 
+      Battle.new @fighters
       
       # Battle is finished, so disconnect the fighters.
       raise FightFinished
@@ -82,7 +82,7 @@ class World
         # Makes sure users don't start at the same point.
         begin
           point = rand_point
-        end while points.include?(point)
+        end while points.include? point
 
         points[index] = point
       end
@@ -94,7 +94,7 @@ class World
     end
 
     def rand_coord
-      rand(Dimension)
+      rand Dimension
     end
 
     # Returns string of the state of the world.
@@ -113,7 +113,7 @@ class World
       Dimension.times do |x|
         Dimension.times do |y|
           # Render the text for the cell
-          state_text += " #{render_cell(x,y)} "
+          state_text += " #{render_cell x,y} "
 
           # Border between cells.
           state_text += "|" if y < Max_Coord
@@ -150,14 +150,14 @@ class World
 
     # Returns a character representation of the given cell.
     def render_cell(x,y)
-      case num_fighters_in_cell(x,y)
+      case num_fighters_in_cell x,y
       # Two fighters in the cell, so we display a !.
       when 2
         "!"
 
       # One fighter in the cell.
       when 1
-        fighter_icon_at(x,y)
+        fighter_icon_at x,y
 
       # No fighters, so this is a blank cell.
       when 0
@@ -178,7 +178,7 @@ class World
       count = 0
 
       @fighters.each do |fighter|
-        count +=1 if fighter.located_here?(x, y)
+        count +=1 if fighter.located_here? x, y
       end
 
       count

@@ -2,7 +2,7 @@ require './fighter'
 
 class Server
   def initialize
-    @server = TCPServer.new(3939)
+    @server = TCPServer.new 3939
     @fighters = []
   end
 
@@ -15,7 +15,7 @@ class Server
       puts "Server started. Accepting connections..."
 
       while (connection = @server.accept)
-        accept(connection)
+        accept connection
       end
     end
 
@@ -24,10 +24,10 @@ class Server
         # Rescues errors with connection.
         begin
           # Don't want too many people to connect.
-          connection_limit_check(c)
+          connection_limit_check c
 
           # Set up the fighter.
-          fighter = join_fighter(c)
+          fighter = join_fighter c
 
           # Need all fighters to join before starting the game.
           wait_for_both_fighters
@@ -36,7 +36,7 @@ class Server
           fighter.spawn
 
           # Game is finished, so disconnect.
-          disconnect(fighter)
+          disconnect fighter
 
         # Fighter disconnecting raises an exception.
         # We need to reset our state so we can accept more connections.
@@ -49,7 +49,7 @@ class Server
     def wait_for_both_fighters
       # If we're still waiting on the other fighter
       if !both_fighters_connected?
-        broadcast("\nWaiting for the other fighter to start the fight.")
+        broadcast "\nWaiting for the other fighter to start the fight."
         while !both_fighters_connected?
           sleep 0.5
         end
@@ -61,9 +61,9 @@ class Server
     end
 
     def join_fighter(connection)
-      welcome(connection)
+      welcome connection
 
-      fighter = new_fighter(connection)
+      fighter = new_fighter connection
 
       announce_fighter_join
 
@@ -71,7 +71,7 @@ class Server
     end
 
     def new_fighter(connection)
-      fighter = Fighter.new(connection)
+      fighter = Fighter.new connection
 
       @fighters << fighter
 
@@ -84,14 +84,14 @@ class Server
     end
 
     def fighters_connected
-      broadcast("All fighters connected:")
+      broadcast "All fighters connected:"
       @fighters.each do |f|
-        broadcast("  #{f.name}")
+        broadcast "  #{f.name}"
       end
     end
 
     def announce_fighter_join
-      broadcast("\nNew fighter connected!")
+      broadcast "\nNew fighter connected!"
       fighters_connected
     end
 
@@ -113,7 +113,7 @@ class Server
     end
 
     def announce_fighter_leave
-      broadcast("\nFighter disconnected!")
+      broadcast "\nFighter disconnected!"
       fighters_connected
     end
 
@@ -124,7 +124,7 @@ class Server
       announce_fighter_leave
     end
 
-    # 
+    # Resets the server to a state for two new fighters to join.
     def reset
       @fighters.each do |fighter|
         begin

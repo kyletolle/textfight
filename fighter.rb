@@ -12,7 +12,7 @@ class Fighter
     self.health = 100
 
     @world = World.instance
-    self.number = @world.join(self)
+    self.number = @world.join self
     self.location = @world.starting_location!
   end
 
@@ -49,7 +49,7 @@ class Fighter
         connection.puts "What's your name? (10 alphanum/spaces only, please.)"
         # Only grab 10 characters.
         name = connection.gets.chomp[0..10]
-      end while !only_chars?(name)
+      end while !only_chars? name
       name
     end
 
@@ -63,7 +63,7 @@ class Fighter
 
       while movement = connection.gets.chomp
         begin
-          parse(movement)
+          parse movement
         end
       end
     end
@@ -72,16 +72,16 @@ class Fighter
     def parse(movement)
       case movement
       when up?
-        move(:up)
+        move :up
 
       when left?
-        move(:left)
+        move :left
 
       when down?
-        move(:down)
+        move :down
 
       when right?
-        move(:right)
+        move :right
 
       when quit?
         confirm_quit
@@ -118,29 +118,29 @@ class Fighter
     # Movement
     ###
     def move(direction)
-      send(direction)
+      send direction
 
       @world.fighter_moved
     end
 
     # Move the fighter up in the world, wrapping around the edges.
     def up
-      self.x = (((x-1)+10)%10)
+      self.x = ((x-1)+10)%10
     end
 
     # Move the fighter left in the world, wrapping around the edges.
     def left
-      self.y = (((y-1)+10)%10)
+      self.y = ((y-1)+10)%10
     end
 
     # Move the fighter down in the world, wrapping around the edges.
     def down
-      self.x = ((x+1)%10)
+      self.x = (x+1)%10
     end
 
     # Move the fighter right in the world, wrapping around the edges.
     def right
-      self.y = ((y+1)%10)
+      self.y = (y+1)%10
     end
 
     # Fighter gave an invalid movement; let them know.
@@ -148,7 +148,7 @@ class Fighter
       connection.puts "Invalid movement. Please use WASD to move!"
 
       # Show the text for a short time before showing the world again.
-      sleep(0.5)
+      sleep 0.5
       @world.render
     end
 

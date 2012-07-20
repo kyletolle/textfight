@@ -1,6 +1,6 @@
 require './fighter'
 
-MaxFighters = 2
+MAX_FIGHTERS = 2
 
 class ConnectionLimitException < Exception
 end
@@ -65,7 +65,7 @@ class Server
     end
 
     def both_fighters_connected?
-      @fighters.size == MaxFighters
+      @fighters.size == MAX_FIGHTERS
     end
 
     def join_fighter(connection)
@@ -110,12 +110,12 @@ class Server
     end
 
     def connection_limit_reached?
-      return @fighters.size >= MaxFighters
+      return @fighters.size >= MAX_FIGHTERS
     end
 
     def connection_limit_check(c)
       if connection_limit_reached?
-        c.puts "There are already #{MaxFighters} fighters!"
+        c.puts "There are already #{MAX_FIGHTERS} fighters!"
         c.close
 
 	raise ConnectionLimitException

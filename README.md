@@ -1,7 +1,7 @@
 # What is textfight?
-textfight is a simple, text-based client/server application that allows fighters to join and wander around the world.
-
-The ability to do battle with the other fighter will come soon!
+textfight is a simple, text-based client/server application that allows fighters
+to join and wander around the small world. These fighters can walk around, and,
+when they land on the same square, do battle!
 
 # Using textfight
 

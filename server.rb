@@ -44,7 +44,7 @@ class Server
           disconnect fighter
 
         rescue ConnectionLimitException
-	  puts "Fighter limit reached. Extra fighter connection closed."
+          puts "Fighter limit reached. Extra fighter connection closed."
 
         # Fighter disconnecting raises an exception.
         # We need to reset our state so we can accept more connections.

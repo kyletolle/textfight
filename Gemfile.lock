@@ -1,0 +1,43 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-io (0.17.3)
+      celluloid (>= 0.17.2)
+      nio4r (>= 1.1)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.6)
+      timers (>= 4.1.1)
+    hitimes (1.2.6)
+    hitimes (1.2.6-java)
+    nio4r (2.3.0)
+    nio4r (2.3.0-java)
+    rdoc (6.0.3)
+    timers (4.1.2)
+      hitimes
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  celluloid
+  celluloid-io
+  rdoc
+
+BUNDLED WITH
+   1.16.1

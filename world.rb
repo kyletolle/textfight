@@ -4,10 +4,10 @@ require './battle'
 module ThreadSafeSingleton
   def self.append_features(clazz)
     require 'thread'
-      clazz.module_eval { 
+      clazz.module_eval {
       private_class_method :new
       @instance_mutex = Mutex.new
-      def self.instance 
+      def self.instance
         @instance_mutex.synchronize {
           @instance = new unless @instance
           @instance
@@ -26,7 +26,7 @@ end
 # Represents the world the fighters see.
 class World
   include ThreadSafeSingleton
-  
+
   class FightFinished < StandardError; end
 
   # Places the user on the map.
@@ -49,7 +49,7 @@ class World
 
     if fighters_in_same_cell?
       Battle.new @fighters
-      
+
       # Battle is finished, so disconnect the fighters.
       raise FightFinished
     end

@@ -14,10 +14,10 @@ class Battle
       broadcast
     end while fighters_both_alive?
 
-    broadcast "The fight is over! The winner is..." 
+    broadcast "The fight is over! The winner is..."
     broadcast @winner.name
 
-    broadcast 
+    broadcast
     broadcast "This textfight has ended. Thanks for fighting!"
     broadcast "Start the client once more to play again."
   end

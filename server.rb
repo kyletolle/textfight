@@ -118,7 +118,7 @@ class Server
         c.puts "There are already #{MAX_FIGHTERS} fighters!"
         c.close
 
-	raise ConnectionLimitException
+        raise ConnectionLimitException
       end
     end
 
